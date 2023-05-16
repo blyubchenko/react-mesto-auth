@@ -23,4 +23,4 @@
 - JavaScript код объектно-ориентирован.
 
 ## Ссылка на сайт:
-https://blyubchenko.github.io/mesto-react-auth/
+https://blyubchenko.github.io/react-mesto-auth/
