@@ -1,59 +1,37 @@
-import React, { useState } from "react";
+import React, {useEffect} from "react";
 import { Link } from "react-router-dom";
+import { useFormAndValidation } from "../hooks/useFormAndValidation";
+import AuthForm from "./AuthForm";
 
 function Register(props) {
-  const [formValue, setFormValue] = useState({
-    email: "",
-    password: "",
-  });
+  const { values, handleChange, errors, isValid, setValues, resetForm } =
+    useFormAndValidation();
 
   function handleSubmit(e) {
     e.preventDefault();
-    const { email, password } = formValue;
+    const { email, password } = values;
     props.onRegister(email, password);
-  } 
-
-  function handleChange(e) {
-    const { name, value } = e.target;
-    setFormValue({
-      ...formValue,
-      [name]: value,
-    });
   }
+
+  useEffect(() => {
+    resetForm();
+  }, []);
+
   return (
-    <div className="login">
-      <h3 className="login__title">Регистрация</h3>
-      <form onSubmit={handleSubmit} className="login__form">
-        <div className="login__inputs">
-          <input
-            required
-            id="email"
-            name="email"
-            type="text"
-            value={formValue.email}
-            onChange={handleChange}
-            className="login__input"
-            placeholder="Email"
-          />
-          <input
-            required
-            id="password"
-            name="password"
-            type="password"
-            value={formValue.password}
-            onChange={handleChange}
-            className="login__input"
-            placeholder="Пароль"
-          />
-        </div>
-        <button type="submit" className="login__button">
-          Зарегистрироваться
-        </button>
-      </form>
+    <>
+    <AuthForm
+      titleName="Регистрация"
+      buttonName="Зарегистрироваться"
+      onSubmit={handleSubmit}
+      onChange={handleChange}
+      onErrors={errors}
+      isDisabled={!isValid}
+      onValues={values}
+    />
       <Link to={"/sign-in"} className="login__link">
         Уже зарегистрированы? Войти
       </Link>
-    </div>
+      </>
   );
 }
 

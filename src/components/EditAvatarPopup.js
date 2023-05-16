@@ -1,41 +1,59 @@
-import React from "react";
+import React, {useEffect} from "react";
 import PopupWithForm from "./PopupWithForm";
+import { useFormAndValidation } from "../hooks/useFormAndValidation";
+import Popup from "./Popup";
 
 function EditAvatarPopup(props) {
-  const avatarRef = React.useRef();
+  const { values, handleChange, errors, isValid, resetForm } =
+    useFormAndValidation();
 
   function handleSubmit(e) {
     e.preventDefault();
 
     props.onUpdateAvatar({
-      avatar: avatarRef.current.value,
+      avatar: values.avatar,
     });
   }
 
+  useEffect(() => {
+    if (props.isOpen) {
+      resetForm();
+    }
+  }, [props.isOpen]);
+
   return (
+    <Popup name="profile" isOpen={props.isOpen} onClose={props.onClose}>
     <PopupWithForm
       name="avatar"
-      isOpen={props.isOpen}
-      onClose={props.onClose}
       title="Обновить аватар"
       titleBtn="Сохранить"
       size="medium"
       onSubmit={handleSubmit}
       isLoading={props.isLoading}
+      isDisabled={!isValid}
     >
       <fieldset className="popup__wraper-input">
         <input
+          onChange={handleChange}
+          value={values.avatar || ""}
           className="popup__input"
           type="url"
           id="avatar"
           name="avatar"
           placeholder="Ссылка на  аватар"
-          ref={avatarRef}
           required
         />
-        <span className="popup__input-error" id="avatar-error"></span>
+        <span
+          className={`popup__input-error ${
+            !isValid && "popup__input-error_active"
+          }`}
+          id="avatar-error"
+        >
+          {errors.avatar}
+        </span>
       </fieldset>
     </PopupWithForm>
+    </Popup>
   );
 }
 

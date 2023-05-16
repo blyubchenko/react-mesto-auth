@@ -51,10 +51,21 @@ function App() {
     tokenCheck();
   }, []);
 
+  function login(email, password, event, setFormValue) {
+    Auth.login(email, password)
+      .then((data) => {
+        if (data.token) {
+          setFormValue({ email: "", password: "" });
+          handleLogin(event);
+          navigate("/", { replace: true });
+        }
+      })
+      .catch((err) => console.log(err));
+  }
+
   function register(email, password) {
     Auth.register(email, password)
       .then((res) => {
-        console.log(res);
         setSuccessRegister(true);
         openInfoTooltips();
         navigate("/sign-in");
@@ -70,14 +81,18 @@ function App() {
     if (localStorage.getItem("jwt")) {
       const jwt = localStorage.getItem("jwt");
       if (jwt) {
-        Auth.getContent(jwt).then((res) => {
-          if (res) {
-            const emailData = res.data.email;
-            setEmail(emailData);
-            setLoggedIn(true);
-            navigate("/", { replace: true });
-          }
-        });
+        Auth.getContent(jwt)
+          .then((res) => {
+            if (res) {
+              const emailData = res.data.email;
+              setEmail(emailData);
+              setLoggedIn(true);
+              navigate("/", { replace: true });
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+          });
       }
     }
   }
@@ -237,7 +252,7 @@ function App() {
             element={
               <>
                 <Header text="Регистрация" onClick={loginNavigate} />
-                <Login handleLogin={handleLogin} />
+                <Login onLogin={login} />
               </>
             }
           />

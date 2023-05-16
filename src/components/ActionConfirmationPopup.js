@@ -1,5 +1,6 @@
 import React from "react";
 import PopupWithForm from "./PopupWithForm";
+import Popup from "./Popup";
 
 function ActionConfirmationPopup(props) {
   function handleSubmit(e) {
@@ -8,15 +9,15 @@ function ActionConfirmationPopup(props) {
     props.onDeleteCard(props.card);
   }
   return (
-    <PopupWithForm
-      name="confirmation"
-      isOpen={props.isOpen}
-      onClose={props.onClose}
-      title="Вы уверены?"
-      titleBtn="Да"
-      size="small"
-      onSubmit={handleSubmit}
-    />
+    <Popup name="confirmation" isOpen={props.isOpen} onClose={props.onClose}>
+      <PopupWithForm
+        name="confirmation"
+        title="Вы уверены?"
+        titleBtn="Да"
+        size="small"
+        onSubmit={handleSubmit}
+      />
+    </Popup>
   );
 }
 

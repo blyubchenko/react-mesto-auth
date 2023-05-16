@@ -2,7 +2,7 @@ function Footer() {
   return (
     <footer className="foother">
       <span className="foother__copyright" lang="en">
-        © 2022 Mesto Russia
+        © {new Date().getFullYear()} Mesto Russia
       </span>
     </footer>
   );

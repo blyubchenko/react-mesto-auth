@@ -1,16 +1,10 @@
 import React from "react";
 import logoTrue from "../images/logo/true.svg";
 import logoFalse from "../images/logo/false.svg";
+import Popup from "./Popup";
 function InfoTooltip(props) {
   return (
-    <div className={`popup  ${props.isOpen ? "popup_opened" : ""} `}>
-      <div className="popup__container">
-        <button
-          className="popup__button-close"
-          type="button"
-          aria-label="Закрыть окно"
-          onClick={props.onClose}
-        ></button>
+    <Popup isOpen={props.isOpen} onClose={props.onClose}>
         <img
           src={props.isSuccess ? logoTrue : logoFalse}
           alt={props.isSuccess ? "Успешная регистрация" : "Ошибка регистрации"}
@@ -21,8 +15,7 @@ function InfoTooltip(props) {
             ? "Вы успешно зарегистрировались!"
             : "Что-то пошло не так! Попробуйте ещё раз."}
         </p>
-      </div>
-    </div>
+        </Popup>
   );
 }
 export default InfoTooltip;

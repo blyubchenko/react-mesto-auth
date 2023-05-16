@@ -1,26 +1,32 @@
-import React from "react";
+import React, { useEffect } from "react";
 import PopupWithForm from "./PopupWithForm";
+import { useFormAndValidation } from "../hooks/useFormAndValidation";
+import Popup from "./Popup";
 
 function AddPlacePopup(props) {
-  const placeNameRef = React.useRef();
-  const placeLinkRef = React.useRef();
+  const { values, handleChange, errors, isValid, setValues, resetForm } =
+    useFormAndValidation();
 
   function handleSubmit(e) {
     e.preventDefault();
 
     props.onAddPlace({
-      name: placeNameRef.current.value,
-      link: placeLinkRef.current.value,
+      name: values.name,
+      link: values.link,
     });
   }
-  React.useEffect(() => {
+  useEffect(() => {
     if (props.isOpen) {
-      placeNameRef.current.value = "";
-      placeLinkRef.current.value = "";
+      resetForm();
+      setValues({
+        name: "",
+        link: "",
+      });
     }
   }, [props.isOpen]);
 
   return (
+    <Popup name="profile" isOpen={props.isOpen} onClose={props.onClose}>
     <PopupWithForm
       name="photo"
       isOpen={props.isOpen}
@@ -30,11 +36,13 @@ function AddPlacePopup(props) {
       titleBtn="Создать"
       onSubmit={handleSubmit}
       isLoading={props.isLoading}
+      isDisabled={!isValid}
     >
       <fieldset className="popup__wraper-input">
         <input
+          onChange={handleChange}
+          value={values.name || ""}
           className="popup__input"
-          ref={placeNameRef}
           type="text"
           id="title"
           name="name"
@@ -43,19 +51,35 @@ function AddPlacePopup(props) {
           maxLength="30"
           required
         />
-        <span className="popup__input-error" id="title-error"></span>
+        <span
+          className={`popup__input-error ${
+            !isValid && "popup__input-error_active"
+          }`}
+          id="title-error"
+        >
+          {errors.name}
+        </span>
         <input
+          onChange={handleChange}
+          value={values.link || ""}
           className="popup__input"
-          ref={placeLinkRef}
           type="url"
           id="link"
           name="link"
           placeholder="Ссылка на картинку"
           required
         />
-        <span className="popup__input-error" id="link-error"></span>
+        <span
+          className={`popup__input-error ${
+            !isValid && "popup__input-error_active"
+          }`}
+          id="link-error"
+        >
+          {errors.link}
+        </span>
       </fieldset>
     </PopupWithForm>
+    </Popup>
   );
 }
 
