@@ -53,7 +53,7 @@ function EditProfilePopup(props) {
           />
           <span
             className={`popup__input-error ${
-              !isValid && "popup__input-error_active"
+              !isValid && "popup__input-error_active" && props.isOpen
             }`}
             id="name-error"
           >
@@ -73,7 +73,7 @@ function EditProfilePopup(props) {
           />
           <span
             className={`popup__input-error ${
-              !isValid && "popup__input-error_active"
+              !isValid && "popup__input-error_active" && props.isOpen
             }`}
             id="about-error"
           >
